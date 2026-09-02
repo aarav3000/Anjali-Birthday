@@ -538,10 +538,7 @@ transform:translateZ(22px);
 transition:transform .25s ease,box-shadow .25s ease;
 }
 
-.btn:before,
-.choice:before{
-content:"";
-position:absolute;
+.btn:before,.choice:before{content:"";pointer-events:none;position:absolute;
 inset:-80% 45% -80% -45%;
 background:linear-gradient(
 100deg,
@@ -1907,10 +1904,9 @@ confetti(45);
 
 }
 
-$('#surprise').addEventListener(
-'click',
-openSurprise
-);
+document.addEventListener('click',function(e){
+  if(e.target.closest('#surprise')) openSurprise(e);
+});
 
 </script>
 
