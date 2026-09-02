@@ -520,7 +520,64 @@ scroll-behavior:smooth;
 body{
 perspective:1200px;
 }
+  
+/* FINAL SURPRISE */
+  
+.typing-msg{
+  max-width:720px;
+  margin:25px auto 0;
+  padding:0 16px;
+  white-space:normal;
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity .8s ease,transform .8s ease;
+  line-height:1.5 !important;
+}
 
+.typing-msg.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.sparkle-final{
+  position:fixed;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#fff;
+  pointer-events:none;
+  z-index:400;
+  box-shadow:0 0 12px 3px #ffd5e5;
+  animation:sparkleFinal .9s ease-out forwards;
+}
+
+@keyframes sparkleFinal{
+  0%{
+    opacity:0;
+    transform:scale(.2) translate(0,0);
+  }
+  35%{
+    opacity:1;
+    transform:scale(1.3);
+  }
+  100%{
+    opacity:0;
+    transform:scale(.2) translate(var(--sx),var(--sy));
+  }
+}
+
+.cake-scene{
+  animation:cake3d 8s ease-in-out infinite !important;
+}
+
+@keyframes cake3d{
+  0%,100%{
+    transform:rotateY(-6deg) rotateX(2deg) translateY(0);
+  }
+  50%{
+    transform:rotateY(7deg) rotateX(-2deg) translateY(-7px);
+  }
+}
 .box{
 transform-style:preserve-3d;
 animation:boxFloat 6s ease-in-out infinite;
@@ -2201,58 +2258,135 @@ updateSong,
 {passive:true}
 );
 
-window.openSurprise=function(e){
+function openSurprise(e){
 
-if(e)e.preventDefault();
+  if(e)e.preventDefault();
 
-const cw=$('#cakeWrap');
-const hf=$('#heartFinal');
-const fm=$('#finalmsg');
-const btn=$('#surprise');
+  const cw=$('#cakeWrap');
+  const hf=$('#heartFinal');
+  const fm=$('#finalmsg');
+  const btn=$('#surprise');
 
-if(!cw||!hf||!fm||!btn)
-return;
+  if(!cw||!fm||!btn)return;
 
-if(btn.disabled)
-return;
+  if(btn.dataset.running==='1')return;
 
-btn.disabled=true;
-btn.classList.add('hidden');
+  btn.dataset.running='1';
+  btn.disabled=true;
 
-hf.style.display='none';
+  btn.style.opacity='0';
+  btn.style.pointerEvents='none';
 
-fm.classList.add('hidden');
-fm.style.display='none';
+  if(hf)hf.style.display='none';
 
-cw.classList.remove('blown');
-cw.style.display='block';
+  cw.classList.remove('blown');
+  cw.style.display='block';
 
-petals(35);
-confetti(60);
+  fm.classList.remove('show');
+  fm.classList.add('hidden');
 
-setTimeout(()=>{
+  petals(18);
 
-cw.classList.add('blown');
-confetti(35);
+  setTimeout(()=>{
 
-},1700);
+    cw.classList.add('blown');
 
-setTimeout(()=>{
+    for(let i=0;i<12;i++){
 
-cw.style.display='none';
+      setTimeout(()=>{
 
-hf.style.display='grid';
+        const s=document.createElement('i');
 
-fm.classList.remove('hidden');
-fm.style.display='block';
+        s.className='sparkle-final';
 
-petals(45);
-confetti(45);
+        s.style.left=(50+(Math.random()*18-9))+'vw';
+        s.style.top=(48+(Math.random()*15-7.5))+'vh';
 
-},3600);
+        s.style.setProperty(
+          '--sx',
+          (Math.random()*90-45)+'px'
+        );
+
+        s.style.setProperty(
+          '--sy',
+          (Math.random()*-90-20)+'px'
+        );
+
+        document.body.appendChild(s);
+
+        setTimeout(()=>s.remove(),1000);
+
+      },i*45);
+
+    }
+
+  },1700);
+
+  setTimeout(()=>{
+
+    fm.classList.remove('hidden');
+    fm.classList.add('show');
+
+    const original=fm.innerHTML;
+
+    fm.innerHTML='';
+
+    let i=0;
+
+    function type(){
+
+      if(i<original.length){
+
+        fm.innerHTML=original.slice(0,i+1);
+
+        i++;
+
+        if(i%7===0){
+
+          const s=document.createElement('i');
+
+          s.className='sparkle-final';
+
+          const r=fm.getBoundingClientRect();
+
+          s.style.left=
+            (r.left+Math.random()*r.width)+'px';
+
+          s.style.top=
+            (r.top+Math.random()*r.height)+'px';
+
+          s.style.setProperty(
+            '--sx',
+            (Math.random()*50-25)+'px'
+          );
+
+          s.style.setProperty(
+            '--sy',
+            (Math.random()*-45-10)+'px'
+          );
+
+          document.body.appendChild(s);
+
+          setTimeout(()=>s.remove(),1000);
+
+        }
+
+        setTimeout(type,28);
+
+      }else{
+
+        btn.dataset.running='0';
+        btn.disabled=false;
+
+      }
+
+    }
+
+    type();
+
+  },2450);
 
 }
-$('#surprise').onclick=openSurprise;
 </script>
 
   </body>
