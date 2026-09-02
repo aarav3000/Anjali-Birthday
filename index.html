@@ -2256,16 +2256,16 @@ addEventListener(
 'resize',
 updateSong,
 {passive:true}
-);
 
-function openSurprise(e){
+
+  function openSurprise(e){
 
   if(e)e.preventDefault();
 
   const cw=$('#cakeWrap');
-  const hf=$('#heartFinal');
   const fm=$('#finalmsg');
   const btn=$('#surprise');
+  const hf=$('#heartFinal');
 
   if(!cw||!fm||!btn)return;
 
@@ -2274,109 +2274,84 @@ function openSurprise(e){
   btn.dataset.running='1';
   btn.disabled=true;
 
-  btn.style.opacity='0';
-  btn.style.pointerEvents='none';
-
   if(hf)hf.style.display='none';
 
   cw.classList.remove('blown');
   cw.style.display='block';
 
-  fm.classList.remove('show');
   fm.classList.add('hidden');
+  fm.classList.remove('show');
 
-  petals(18);
+  petals(20);
 
   setTimeout(()=>{
 
     cw.classList.add('blown');
 
-    for(let i=0;i<12;i++){
-
+    for(let i=0;i<10;i++){
       setTimeout(()=>{
 
         const s=document.createElement('i');
-
         s.className='sparkle-final';
 
-        s.style.left=(50+(Math.random()*18-9))+'vw';
-        s.style.top=(48+(Math.random()*15-7.5))+'vh';
+        s.style.left=(45+Math.random()*10)+'vw';
+        s.style.top=(45+Math.random()*15)+'vh';
 
-        s.style.setProperty(
-          '--sx',
-          (Math.random()*90-45)+'px'
-        );
-
-        s.style.setProperty(
-          '--sy',
-          (Math.random()*-90-20)+'px'
-        );
+        s.style.setProperty('--sx',(Math.random()*60-30)+'px');
+        s.style.setProperty('--sy',(Math.random()*-70-20)+'px');
 
         document.body.appendChild(s);
 
-        setTimeout(()=>s.remove(),1000);
+        setTimeout(()=>s.remove(),900);
 
-      },i*45);
-
+      },i*50);
     }
 
-  },1700);
+  },1600);
+
 
   setTimeout(()=>{
 
     fm.classList.remove('hidden');
     fm.classList.add('show');
 
-    const original=fm.innerHTML;
-
+    const text=fm.innerText;
     fm.innerHTML='';
 
+    const chars=Array.from(text);
     let i=0;
 
     function type(){
 
-      if(i<original.length){
+      if(i<chars.length){
 
-        fm.innerHTML=original.slice(0,i+1);
-
+        fm.textContent+=chars[i];
         i++;
 
-        if(i%7===0){
+        if(i%8===0){
 
           const s=document.createElement('i');
-
           s.className='sparkle-final';
 
           const r=fm.getBoundingClientRect();
 
-          s.style.left=
-            (r.left+Math.random()*r.width)+'px';
+          s.style.left=(r.left+Math.random()*r.width)+'px';
+          s.style.top=(r.top+Math.random()*r.height)+'px';
 
-          s.style.top=
-            (r.top+Math.random()*r.height)+'px';
-
-          s.style.setProperty(
-            '--sx',
-            (Math.random()*50-25)+'px'
-          );
-
-          s.style.setProperty(
-            '--sy',
-            (Math.random()*-45-10)+'px'
-          );
+          s.style.setProperty('--sx',(Math.random()*40-20)+'px');
+          s.style.setProperty('--sy',(Math.random()*-40-10)+'px');
 
           document.body.appendChild(s);
 
-          setTimeout(()=>s.remove(),1000);
-
+          setTimeout(()=>s.remove(),900);
         }
 
-        setTimeout(type,28);
+        setTimeout(type,30);
 
       }else{
 
-        btn.dataset.running='0';
         btn.disabled=false;
+        btn.dataset.running='0';
 
       }
 
@@ -2384,9 +2359,11 @@ function openSurprise(e){
 
     type();
 
-  },2450);
+  },2300);
 
 }
+
+$('#surprise').addEventListener('click',openSurprise);
 </script>
 
   </body>
