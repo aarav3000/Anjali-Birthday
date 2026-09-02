@@ -1693,14 +1693,7 @@ dreams that come true,
 and a thousand little reasons to smile. 🥹🌸✨
 </p>
 
-<button
-type="button"
-class="btn"
-id="surprise"
-onclick="return openSurprise(event)"
->
-Open your surprise 🎀
-</button>
+<button type="button" class="btn" id="surprise">Open your surprise 🎀</button>
 
 <div class="surprise-stage">
 
@@ -2198,62 +2191,38 @@ updateSong,
 
 /* FIXED SURPRISE BUTTON */
 
-window.openSurprise=function(e){
+$('#surprise').onclick=()=>{
+  const cw=$('#cakeWrap');
+  const hf=$('#heartFinal');
+  const fm=$('#finalmsg');
+  const btn=$('#surprise');
 
-if(e)e.preventDefault();
+  if(!cw || !hf || !fm || !btn) return;
 
-const btn=$('#surprise');
-const cw=$('#cakeWrap');
-const hf=$('#heartFinal');
-const fm=$('#finalmsg');
+  btn.disabled=true;
+  btn.classList.add('hidden');
 
-if(!btn||!cw||!hf||!fm)
-return false;
+  hf.style.display='none';
+  fm.classList.add('hidden');
 
-btn.disabled=true;
+  cw.classList.remove('blown');
+  cw.style.display='block';
 
-btn.style.display='none';
+  petals(35);
+  confetti(60);
 
-hf.style.display='none';
+  setTimeout(()=>{
+    cw.classList.add('blown');
+    confetti(35);
+  },1700);
 
-fm.classList.add('hidden');
-
-cw.classList.remove('blown');
-
-cw.style.display='block';
-
-cw.style.visibility='visible';
-
-cw.style.opacity='1';
-
-petals(35);
-
-confetti(60);
-
-setTimeout(function(){
-
-cw.classList.add('blown');
-
-confetti(35);
-
-},1700);
-
-setTimeout(function(){
-
-cw.style.display='none';
-
-hf.style.display='grid';
-
-fm.classList.remove('hidden');
-
-petals(45);
-
-confetti(45);
-
-},3600);
-
-return false;
-
+  setTimeout(()=>{
+    cw.style.display='none';
+    hf.style.display='grid';
+    fm.classList.remove('hidden');
+    petals(45);
+    confetti(45);
+  },3600);
 };
 
 </script>
