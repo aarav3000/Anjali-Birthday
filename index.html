@@ -1216,7 +1216,7 @@ la.currentTime=0;
 
 function unlock(){
 
-if($('#pw').value.trim()==='03/09'){
+if($('#pw').value.trim()==='0309'){
 
 only('#access');
 
@@ -1368,52 +1368,61 @@ $('#flash').textContent=
 };
 
 
-/* MAIN MUSIC */
+  /* MAIN MUSIC — FIXED */
 
 const aud=[
-$('#a1'),
-$('#a2'),
-$('#a3')
+  $('#a1'),
+  $('#a2'),
+  $('#a3')
 ];
 
 const names=[
-'Humsafar',
-'Tum Ho Toh',
-'Ye Raatein Ye Mausam'
+  'Humsafar',
+  'Tum Ho Toh',
+  'Ye Raatein Ye Mausam'
 ];
 
 let cur=0;
+let musicStarted=false;
+
+aud.forEach(a=>{
+  a.preload='auto';
+  a.loop=true;
+  a.volume=.55;
+});
 
 function play(i){
 
-cur=i;
+  cur=i;
 
-aud.forEach(a=>{
-a.pause();
-a.currentTime=0;
-});
+  aud.forEach(a=>{
+    a.pause();
+    a.currentTime=0;
+  });
 
-let a=aud[i];
+  const a=aud[i];
+  if(!a) return;
 
-a.loop=true;
-a.volume=.55;
+  a.load();
 
-a.play().then(()=>{
+  const start=()=>{
+    a.play().then(()=>{
+      musicStarted=true;
+      $('#track').textContent=
+        names[i]+' · playing';
+      $('#mute').textContent='Ⅱ';
+    }).catch(()=>{
+      $('#track').textContent=
+        'Tap ▶ · '+names[i];
+      $('#mute').textContent='▶';
+    });
+  };
 
-$('#track').textContent=
-names[i]+' · playing';
-
-$('#mute').textContent='Ⅱ';
-
-}).catch(()=>{
-
-$('#track').textContent=
-'Tap ▶ · '+names[i];
-
-$('#mute').textContent='▶';
-
-});
-
+  if(a.readyState>=2){
+    start();
+  }else{
+    a.addEventListener('canplay',start,{once:true});
+  }
 }
 
 
@@ -1453,112 +1462,107 @@ $('#mute').textContent='▶';
 };
 
 
-/* SONG SWITCH */
+  /* SONG SWITCH — FIXED */
 
-let s2=false,
-s3=false;
+let lastSong=-1;
 
 function updateSong(){
 
-if($('#story').classList.contains('hidden'))
-return;
+  if($('#story').classList.contains('hidden'))
+    return;
 
-let secs=[
-...document.querySelectorAll('#story>section')
-];
+  const secs=[
+    ...document.querySelectorAll('#story section')
+  ];
 
-let active=secs.reduce(
+  if(!secs.length) return;
 
-(best,sec)=>
+  const active=secs.reduce(
+    (best,sec)=>
+      Math.abs(
+        sec.getBoundingClientRect().top-
+        innerHeight*.35
+      )
+      <
+      Math.abs(
+        best.getBoundingClientRect().top-
+        innerHeight*.35
+      )
+      ?sec:best,
+    secs[0]
+  );
 
-Math.abs(
-sec.getBoundingClientRect().top-
-innerHeight*.35
-)
+  const idx=secs.indexOf(active);
 
-<
+  let wanted;
 
-Math.abs(
-best.getBoundingClientRect().top-
-innerHeight*.35
-)
+  if(idx<6){
+    wanted=0;
+  }else if(idx<9){
+    wanted=1;
+  }else{
+    wanted=2;
+  }
 
-?sec:best,
-
-secs[0]
-
-);
-
-let idx=secs.indexOf(active);
-
-if(idx>=6&&!s2){
-
-s2=true;
-
-play(1);
-
-}
-
-if(idx>=9&&!s3){
-
-s3=true;
-
-play(2);
-
-}
-
+  if(wanted!==lastSong){
+    lastSong=wanted;
+    play(wanted);
+  }
 }
 
 addEventListener(
-'scroll',
-updateSong,
-{passive:true}
+  'scroll',
+  updateSong,
+  {passive:true}
 );
 
+addEventListener(
+  'resize',
+  updateSong,
+  {passive:true}
+);
 
-/* SURPRISE */
+  
+
+/* SURPRISE — FIXED */
 
 $('#surprise').onclick=()=>{
 
-const cw=$('#cakeWrap');
+  const cw=$('#cakeWrap');
+  const hf=$('#heartFinal');
+  const fm=$('#finalmsg');
 
-const hf=$('#heartFinal');
+  if(!cw || !hf || !fm) return;
 
-cw.style.display='block';
+  cw.style.display='block';
+  hf.style.display='none';
+  fm.classList.add('hidden');
 
-$('#surprise').classList.add('hidden');
+  $('#surprise').classList.add('hidden');
 
-petals(35);
+  petals(35);
+  confetti(60);
 
-confetti(60);
+  setTimeout(()=>{
 
+    cw.classList.add('blown');
 
-/* CANDLE BLOW */
+    confetti(35);
 
-setTimeout(()=>{
+  },1700);
 
-cw.classList.add('blown');
+  setTimeout(()=>{
 
-confetti(35);
+    cw.style.display='none';
 
-},1700);
+    hf.style.display='grid';
 
+    fm.classList.remove('hidden');
 
-/* HEART */
+    petals(45);
+    confetti(45);
 
-setTimeout(()=>{
-
-cw.style.display='none';
-
-hf.style.display='grid';
-
-$('#finalmsg').classList.remove('hidden');
-
-petals(45);
-
-confetti(45);
-
-},2600);
+  },3600);
 
 };
 
