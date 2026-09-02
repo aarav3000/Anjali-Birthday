@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A little surprise ✨</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;600&display=swap');
+
+*{box-sizing:border-box}
+body{
+margin:0;
+background:#08070a;
+color:#fff8f6;
+font-family:DM Sans,sans-serif;
+overflow-x:hidden
+}
+
+body:before{
+content:"";
+position:fixed;
+inset:0;
+pointer-events:none;
+z-index:20;
+background:
+radial-gradient(circle at 20% 15%,#ff4f8120,transparent 28%),
+radial-gradient(circle at 80% 50%,#a98bff18,transparent 32%)
+}
+
+.hidden{display:none!important}
+
+.screen{
+min-height:100svh;
+display:grid;
+place-items:center;
+padding:24px
+}
+
+.box{
+width:min(520px,94vw);
+padding:40px 25px;
+border:1px solid #ffffff1c;
+border-radius:28px;
+background:#110d119e;
+backdrop-filter:blur(18px);
+text-align:center;
+box-shadow:0 30px 90px #0008
+}
+
+.tiny{
+font-size:10px;
+letter-spacing:.3em;
+text-transform:uppercase;
+color:#f2ca8a
+}
+
+.title{
+font:500 clamp(52px,12vw,88px)/.85 "Cormorant Garamond";
+margin:16px 0
+}
+
+.sub{
+color:#c9b7b6;
+line-height:1.8;
+font-size:14px
+}
+
+input{
+width:100%;
+padding:16px;
+border-radius:15px;
+border:1px solid #fff2;
+background:#0c0a0d;
+color:white;
+text-align:center;
+letter-spacing:.3em;
+outline:0;
+margin-top:22px
+}
+
+.btn,.choice{
+border:0;
+border-radius:999px;
+padding:15px 23px;
+color:white;
+font-weight:600;
+cursor:pointer
+}
+
+.btn{
+margin-top:12px;
+background:linear-gradient(135deg,#ff4f81,#a96cff);
+box-shadow:0 12px 32px #ff4f8138
+}
+
+.hint{
+font-size:11px;
+color:#8d7e7f;
+margin-top:12px
+}
+
+.error{
+color:#ff9eb0;
+font-size:12px;
+min-height:20px;
+margin-top:7px
+}
+
+.letter{
+min-height:100svh;
+display:grid;
+place-items:center;
+text-align:center;
+padding:80px 18px
+}
+
+.letter img{
+width:min(650px,96vw);
+max-height:78svh;
+object-fit:contain;
+filter:drop-shadow(0 30px 45px #0008)
+}
+
+.question{
+min-height:100svh;
+display:grid;
+place-items:center;
+text-align:center;
+padding:30px
+}
+
+.question h2{
+font:500 clamp(58px,13vw,110px)/.82 "Cormorant Garamond";
+margin:18px 0
+}
+
+.choices{
+display:flex;
+justify-content:center;
+gap:14px;
+margin-top:30px;
+min-height:60px
+}
+
+.yes{
+background:linear-gradient(135deg,#ff3e79,#ff9b68)
+}
+
+.no{
+background:linear-gradient(135deg,#4b3c58,#242332)
+}
+
+.flash{
+height:28px;
+color:#ffb7c6;
+margin-top:10px;
+opacity:0;
+transition:.3s
+}
+
+.flash.on{opacity:1}
+
+.story section{
+min-height:100svh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:70px 16px
+}
+
+.storyhero{
+background:
+linear-gradient(#08070a22,#08070af0),
+url("assets/photo-01.jpg") center/cover
+}
+
+.story h1{
+font:500 clamp(65px,14vw,130px)/.8 "Cormorant Garamond";
+margin:18px 0
+}
+
+.photo{gap:22px}
+
+.frame{
+width:min(92vw,760px);
+height:min(76svh,820px);
+overflow:hidden;
+border-radius:12px;
+box-shadow:0 30px 80px #0009
+}
+
+.frame img{
+width:100%;
+height:100%;
+object-fit:cover;
+animation:zoom 9s ease-in-out infinite alternate
+}
+
+@keyframes zoom{
+to{transform:scale(1.1)}
+}
+
+.wish{
+font:500 clamp(24px,5vw,40px)/1.1 "Cormorant Garamond";
+max-width:760px
+}
+
+.couple{
+background:
+linear-gradient(#08070a33,#08070adf),
+url("assets/photo-09.jpg") center/cover
+}
+
+.couple h2{
+font:500 clamp(65px,14vw,140px)/.72 "Cormorant Garamond";
+background:linear-gradient(90deg,#ffd4dc,#fff,#d6c9ff);
+-webkit-background-clip:text;
+color:transparent
+}
+
+.music{
+position:fixed;
+right:15px;
+bottom:15px;
+z-index:100
+}
+
+.music button{
+width:46px;
+height:46px;
+border-radius:50%;
+border:1px solid #fff3;
+background:#100c12dd;
+color:#fff
+}
+
+.track{
+display:inline-block;
+background:#100c12dd;
+border:1px solid #fff2;
+padding:10px 12px;
+border-radius:99px;
+font-size:9px;
+letter-spacing:.15em;
+text-transform:uppercase;
+margin-right:6px
+}
+
+.final{
+background:radial-gradient(circle,#ff4f8130,transparent 45%)
+}
+
+.gift{font-size:72px}
+
+.final h2{
+font:500 clamp(62px,13vw,130px)/.78 "Cormorant Garamond";
+margin:18px 0
+}
+
+.footer{
+text-align:center;
+padding:25px;
+color:#75686a;
+font-size:10px;
+letter-spacing:.2em;
+text-transform:uppercase
+}
+
+.petal{
+position:fixed;
+top:-20px;
+z-index:120;
+width:7px;
+height:11px;
+border-radius:80% 20%;
+background:#ff8fa3c7;
+animation:fall linear forwards
+}
+
+@keyframes fall{
+to{
+transform:translate3d(var(--d),110vh,0) rotate(540deg);
+opacity:0
+}
+}
+
+@media(max-width:600px){
+.choices .choice{min-width:118px}
+.frame{height:70svh}
+}
+</style>
+</head>
+
+<body>
+
+<section id="lock" class="screen">
+<div class="box">
+<div style="font-size:38px">🔐✨</div>
+<div class="tiny">A private little surprise</div>
+<div class="title">Something is waiting…</div>
+<p class="sub">
+Only someone special can unlock this. 🎁💗
+</p>
+
+<input
+id="pw"
+type="password"
+inputmode="numeric"
+maxlength="5"
+placeholder="Enter secret password">
+
+<button class="btn" id="unlock">
+Unlock ✨
+</button>
+
+<div class="hint">Hint: DD/MM 👀</div>
+<div class="error" id="err"></div>
+</div>
+</section>
+
+<section id="access" class="screen hidden">
+<div class="box">
+<div class="title">Access granted ✨</div>
+<p class="sub">
+I knew you’d figure it out. ❤️
+</p>
+</div>
+</section>
+
+<section id="letter" class="letter hidden">
+<div>
+<div class="tiny">A note, written just for you ✍🏻💌</div>
+
+<img
+src="assets/birthday-letter.png"
+alt="Handwritten birthday letter">
+
+<br>
+
+<button class="btn" id="read">
+I read it ❤️
+</button>
+</div>
+</section>
+
+<section id="question" class="question hidden">
+<div>
+
+<div id="emoji" style="font-size:34px">🥹❤️</div>
+
+<div class="tiny">One honest answer…</div>
+
+<h2 id="qt">Do you love me?</h2>
+
+<p class="sub" id="qs">
+No pressure… 👀 (okay, maybe a little 😂)
+</p>
+
+<div class="choices">
+<button class="choice yes" id="yes">
+YES ❤️
+</button>
+
+<button class="choice no" id="no">
+NO 😐
+</button>
+</div>
+
+<div class="flash" id="flash"></div>
+
+</div>
+</section>
+
+<main id="story" class="story hidden">
+
+<div class="music">
+<span class="track" id="track">Humsafar</span>
+<button id="mute">Ⅱ</button>
+</div>
+
+<section class="storyhero">
+<div>
+
+<div class="tiny">A little story for</div>
+
+<h1>Anjali ✨</h1>
+
+<p class="sub">
+Some people deserve more than a birthday text.
+So I made you a tiny corner of the internet.
+🎂🌸
+</p>
+
+</div>
+</section>
+
+<section class="photo">
+<div class="frame">
+<img src="assets/photo-02.jpg">
+</div>
+
+<div class="wish">
+May your smile always stay this beautiful. 😊🌸
+</div>
+</section>
+
+<section class="photo">
+<div class="frame">
+<img src="assets/photo-03.jpg">
+</div>
+
+<div class="wish">
+Keep shining, Anjali. ✨❤️
+</div>
+</section>
+
+<section class="photo">
+<div class="frame">
+<img src="assets/photo-04.jpg">
+</div>
+
+<div class="wish">
+Another year, another reason to celebrate you. 🎂🥹
+</div>
+</section>
+
+<section class="photo">
+<div class="frame">
+<img src="assets/photo-05.jpg">
+</div>
+
+<div class="wish">
+You deserve all the beautiful things life has to offer. 🌷✨
+</div>
+</section>
+
+<section class="photo">
+<div class="frame">
+<img src="assets/photo-06.jpg">
+</div>
+
+<div class="wish">
+Stay happy, stay crazy, stay you. 😂❤️
+</div>
+</section>
+
+<section class="photo">
+<div class="frame">
+<img src="assets/photo-07.jpg">
+</div>
+
+<div class="wish">
+I’m really glad you’re in my life. 🫶🏻✨
+</div>
+</section>
+
+<section class="couple">
+<div>
+
+<div class="tiny">A little plot twist ❤️</div>
+
+<h2>
+ANJALI<br>
+✦<br>
+VISHAL
+</h2>
+
+<div class="wish">
+Some things just feel right. ❤️✨
+</div>
+
+</div>
+</section>
+
+<section class="photo">
+<div class="frame">
+<img src="assets/photo-08.jpg">
+</div>
+
+<div class="wish">
+Some memories are worth keeping forever. 📸🥹
+</div>
+</section>
+
+<section class="photo">
+<div class="frame">
+<img src="assets/photo-10.jpg">
+</div>
+
+<div class="wish">
+Today, the spotlight is all yours. ✨🎂
+</div>
+</section>
+
+<section class="final">
+<div>
+
+<div class="gift">🎁</div>
+
+<div class="tiny">
+Wait… there’s one more thing 👀
+</div>
+
+<h2>
+Happy<br>
+Birthday,<br>
+Anjali ❤️
+</h2>
+
+<p class="sub">
+May this year bring you happiness that stays,
+dreams that come true,
+and a thousand little reasons to smile.
+🥹🌸✨
+</p>
+
+<button class="btn" id="surprise">
+Open your surprise 🎀
+</button>
+
+<div
+id="finalmsg"
+class="hidden wish"
+style="margin-top:25px">
+
+If I could make one wish for you today…
+I’d wish that you always see yourself
+the way the people who love you see you. ❤️
+
+<br>
+
+<small>— Vishal 🫶🏻</small>
+
+</div>
+
+</div>
+</section>
+
+<div class="footer">
+Made with a little extra effort · For Anjali ❤️
+</div>
+
+</main>
+
+<audio id="a1" src="assets/humsafar.mp3"></audio>
+<audio id="a2" src="assets/tum-ho-toh.mp3"></audio>
+<audio id="a3" src="assets/ye-raatein-ye-mausam.mp3"></audio>
+
+<script>
+
+const $=s=>document.querySelector(s);
+
+function only(id){
+document
+.querySelectorAll('#lock,#access,#letter,#question,#story')
+.forEach(x=>x.classList.add('hidden'));
+
+$(id).classList.remove('hidden');
+scrollTo(0,0);
+}
+
+function petals(n=18){
+for(let i=0;i<n;i++)
+setTimeout(()=>{
+
+let p=document.createElement('i');
+
+p.className='petal';
+
+p.style.left=Math.random()*100+'vw';
+
+p.style.setProperty(
+'--d',
+(Math.random()*240-120)+'px'
+);
+
+p.style.animationDuration=
+5+Math.random()*6+'s';
+
+document.body.appendChild(p);
+
+setTimeout(()=>p.remove(),12000);
+
+},i*90);
+}
+
+function unlock(){
+
+if($('#pw').value.trim()==='03/09'){
+
+only('#access');
+
+petals(12);
+
+setTimeout(
+()=>only('#letter'),
+1800
+);
+
+}else{
+
+$('#err').textContent=
+'Not quite… try again 👀❤️';
+
+$('#pw').animate(
+[
+{transform:'translateX(-7px)'},
+{transform:'translateX(7px)'},
+{transform:'translateX(0)'}
+],
+260
+);
+
+}
+
+}
+
+$('#unlock').onclick=unlock;
+
+$('#pw').onkeydown=e=>{
+if(e.key==='Enter')unlock()
+};
+
+$('#read').onclick=()=>{
+only('#question')
+};
+
+let qi=0;
+
+const qs=[
+
+[
+'Do you love me?',
+'No pressure… 👀 (okay, maybe a little 😂)',
+'🥹❤️'
+],
+
+[
+'Are you REALLY sure?',
+'That NO looked suspicious. 😭',
+'😳💗'
+],
+
+[
+'Think again, Anjali…',
+'You get one more chance. 👀✨',
+'🤨❤️'
+],
+
+[
+'Last chance!',
+'Itna attitude bhi theek nahi hai. 😂🥺',
+'😤💞'
+]
+
+];
+
+const msgs=[
+
+'Arey yaar… seriously? 😭',
+
+'Itni jaldi NO? 😂❤️',
+
+'Soch le ek baar… 👀',
+
+'Nice try 😏',
+
+'NO ko pakad ke dikhao 🏃🏻‍♂️💨'
+
+];
+
+function q(){
+
+let a=qs[qi];
+
+$('#qt').textContent=a[0];
+$('#qs').textContent=a[1];
+$('#emoji').textContent=a[2];
+
+}
+
+$('#no').onclick=()=>{
+
+$('#flash').textContent=
+msgs[Math.min(qi,msgs.length-1)];
+
+$('#flash').classList.add('on');
+
+if(qi<qs.length-1){
+
+qi++;
+
+setTimeout(q,600);
+
+}else{
+
+$('#no').style.position='fixed';
+
+$('#no').style.left=
+Math.random()*(innerWidth-150)+'px';
+
+$('#no').style.top=
+Math.random()*(innerHeight-80)+'px';
+
+$('#qs').textContent=
+'Okay… now catch the NO button 😂🏃🏻‍♂️';
+
+}
+
+};
+
+const aud=[
+$('#a1'),
+$('#a2'),
+$('#a3')
+];
+
+const names=[
+'Humsafar',
+'Tum Ho Toh',
+'Ye Raatein Ye Mausam'
+];
+
+let cur=0;
+
+function play(i){
+
+cur=i;
+
+aud.forEach(a=>{
+a.pause();
+a.currentTime=0;
+});
+
+let a=aud[i];
+
+a.loop=true;
+a.volume=.55;
+
+a.play().then(()=>{
+
+$('#track').textContent=
+names[i]+' · playing';
+
+$('#mute').textContent='Ⅱ';
+
+}).catch(()=>{
+
+$('#track').textContent=
+'Tap ▶ · '+names[i];
+
+$('#mute').textContent='▶';
+
+});
+
+}
+
+$('#yes').onclick=()=>{
+
+only('#story');
+
+play(0);
+
+petals(25);
+
+};
+
+$('#mute').onclick=()=>{
+
+let a=aud[cur];
+
+if(a.paused){
+
+a.play();
+
+$('#mute').textContent='Ⅱ';
+
+}else{
+
+a.pause();
+
+$('#mute').textContent='▶';
+
+}
+
+};
+
+let s2=false,
+s3=false;
+
+addEventListener('scroll',()=>{
+
+if($('#story').classList.contains('hidden'))
+return;
+
+let y=scrollY,
+h=document.documentElement.scrollHeight-innerHeight;
+
+if(!s2 && y>h*.36){
+
+s2=true;
+play(1);
+
+}
+
+if(!s3 && y>h*.68){
+
+s3=true;
+play(2);
+
+}
+
+});
+
+$('#surprise').onclick=()=>{
+
+$('#finalmsg').classList.remove('hidden');
+
+$('#surprise').classList.add('hidden');
+
+petals(35);
+
+};
+
+</script>
+
+</body>
+  </html>
