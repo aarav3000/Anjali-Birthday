@@ -827,5 +827,61 @@ petals(35);
 
 </script>
 
+  <script>
+/* Uploaded files mapping */
+
+const uploadedFiles = {
+  "assets/photo-01.jpg":
+    "assets/IMG_20260901_225435_464.jpg",
+
+  "assets/photo-02.jpg":
+    "assets/IMG_20260901_225433_820.jpg",
+
+  "assets/photo-03.jpg":
+    "assets/IMG_20260901_225431_771.jpg",
+
+  "assets/photo-04.jpg":
+    "assets/IMG_20260901_225430_452.jpg",
+
+  "assets/photo-05.jpg":
+    "assets/IMG_20260901_225428_474.jpg",
+
+  "assets/photo-06.jpg":
+    "assets/IMG_20260901_225427_051.jpg",
+
+  "assets/photo-07.jpg":
+    "assets/IMG_20260901_225425_863.jpg",
+
+  "assets/photo-08.jpg":
+    "assets/IMG_20260901_225422_245.jpg",
+
+  "assets/photo-09.jpg":
+    "assets/IMG_20260901_225424_617.jpg",
+
+  "assets/photo-10.jpg":
+    "assets/IMG_20260901_225109_344.jpg",
+
+  "assets/birthday-letter.png":
+    "assets/file_00000000ca048211bd0cfb563300b200.png",
+
+  "assets/humsafar.mp3":
+    "assets/Ek Pal Yeh Bhi Lagta Hai Mujhko - Humsafar _ Saiyaara _ Sachet Parampara.mp3",
+
+  "assets/tum-ho-toh.mp3":
+    "assets/Tum Ho Toh Subah Nayi Hai Tum Ho Toh Shaamein Haseen Hai - Tum Ho Toh _ Saiyaara.mp3",
+
+  "assets/yeh-raatein-yeh-mausam.mp3":
+    "assets/Yeh Raatein Yeh Mausam.mp3"
+};
+
+document.querySelectorAll("[src]").forEach(element => {
+  const oldSrc = element.getAttribute("src");
+
+  if (uploadedFiles[oldSrc]) {
+    element.setAttribute("src", uploadedFiles[oldSrc]);
+  }
+});
+  </script>
+
 </body>
   </html>
